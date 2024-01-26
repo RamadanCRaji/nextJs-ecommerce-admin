@@ -1,6 +1,8 @@
 // Here we have the parent modal that we will resuse over and over again
+
 "use client";
 import React from "react";
+
 import {
    Dialog,
    DialogContent,

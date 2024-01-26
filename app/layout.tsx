@@ -1,10 +1,11 @@
-import { ModalProvider } from "@/providers/modal-provider";
-
+import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import type { Metadata } from "next";
+import { ToasterProvider } from "@/providers/toast-provider";
+import { ModalProvider } from "@/providers/modal-provider";
 
-import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import prismadb from "@/lib/prismadb";
 
 import "./globals.css";
 
@@ -23,6 +24,8 @@ export default function RootLayout({
    return (
       <ClerkProvider>
          <html lang="en">
+            <ModalProvider />
+            <ToasterProvider />
             <body className={inter.className}>{children}</body>
          </html>
       </ClerkProvider>

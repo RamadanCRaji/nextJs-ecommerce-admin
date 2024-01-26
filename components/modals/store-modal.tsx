@@ -1,17 +1,104 @@
 "use client";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import axios from "axios";
+
+import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
+import {
+   Form,
+   FormControl,
+   FormDescription,
+   FormField,
+   FormItem,
+   FormLabel,
+   FormMessage,
+} from "@/components/ui/form";
 import { useStoreModal } from "@/hooks/use-store-modal"; //hook that used to control the modal for store
+import { Button } from "@/components/ui/button";
+import { toast } from "react-hot-toast";
+
+// Defines how the form data should look like:Schema
+const StoreformSchema = z.object({
+   name: z
+      .string()
+      .min(5, { message: "Store name must be at least 5 characters." }),
+});
 export const StoreModal = () => {
-   const storeModal = useStoreModal();
+   const storeModalState = useStoreModal();
+   const [loading, setLoading] = useState(false);
+
+   const form = useForm<z.infer<typeof StoreformSchema>>({
+      resolver: zodResolver(StoreformSchema), //used Zod to to validate fields based on schema aka ensuring the data matches ther rules i set in form schema
+      defaultValues: {
+         name: "",
+      },
+   });
+
+   const onSubmit = async (values: z.infer<typeof StoreformSchema>) => {
+      try {
+         setLoading(true);
+         const response = await axios.post("/api/stores", values);
+         console.log(response.data);
+         toast.success("store created.");
+      } catch (error) {
+         toast.error("something went wrong");
+      } finally {
+         setLoading(false);
+      }
+   };
    return (
       <Modal
          title="Create store"
          description="Add a new Store to manage products and catefories "
-         isOpen={storeModal.isOpen}
-         onClose={storeModal.onClose} //the value here is method **look at the use-store-modal hook for the function
+         isOpen={storeModalState.isOpen}
+         onClose={storeModalState.onClose} //the value here is method **look at the use-store-modal hook for the function
       >
-         Future create store form
+         {/* Placeholder for the future store creation form */}
+         <div>
+            <div className="space-y-4 py-2 pb-4">
+               <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)}>
+                     <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                           <FormItem>
+                              <FormLabel>Name</FormLabel>
+                              <FormControl>
+                                 <Input
+                                    disabled={loading}
+                                    placeholder="E-commerce"
+                                    {...field}
+                                 />
+                              </FormControl>
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                     />
+                     <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+                        <Button
+                           variant="outline"
+                           disabled={loading}
+                           onClick={storeModalState.onClose}
+                        >
+                           Cancle
+                        </Button>
+                        <Button disabled={loading} type="submit">
+                           Continue
+                        </Button>
+                     </div>
+                  </form>
+               </Form>
+            </div>
+         </div>
       </Modal>
    );
 };
-// now i want this modal to be available throughout my application and to do that i will create folder called provider (see root folder)
+// To make this modal available throughout the entire application, i created  a dedicated provider(modalProvider) in the root folder.
+
+// typeof formSchema helps TypeScript understand the structure of the expected form data.
+// z.infer<typeof formSchema> infers the exact type of data the form should receive based on formSchema.
+// zodResolver(formSchema) uses formSchema to validate the form data against the defined rules.
