@@ -25,6 +25,7 @@ export default function RootLayout({
       <ClerkProvider>
          <html lang="en">
             <ModalProvider />
+            {/** this is like sayinhgi have <storeModal hereand and when i visit page.tsx of the roo page the modal gets triggered */}
             <ToasterProvider />
             <body className={inter.className}>{children}</body>
          </html>

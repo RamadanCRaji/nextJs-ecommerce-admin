@@ -19,6 +19,7 @@ import {
 import { useStoreModal } from "@/hooks/use-store-modal"; //hook that used to control the modal for store
 import { Button } from "@/components/ui/button";
 import { toast } from "react-hot-toast";
+import { redirect } from "@/node_modules/next/navigation";
 
 // Defines how the form data should look like:Schema
 const StoreformSchema = z.object({
@@ -40,9 +41,15 @@ export const StoreModal = () => {
    const onSubmit = async (values: z.infer<typeof StoreformSchema>) => {
       try {
          setLoading(true);
+
          const response = await axios.post("/api/stores", values);
+
          console.log(response.data);
+
          toast.success("store created.");
+
+         //i am using window.assign and not the nextjS redirect function because window.location completely refreshes the page
+         window.location.assign(`/${response.data.id}`);
       } catch (error) {
          toast.error("something went wrong");
       } finally {

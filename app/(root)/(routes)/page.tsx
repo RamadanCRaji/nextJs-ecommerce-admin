@@ -13,7 +13,7 @@ const SetUpPage = () => {
          onOpen();
       }
    }, [isOpen, onOpen]);
-   return <div className="p-4 bg-white">root page</div>;
+   return null;
 };
 
 export default SetUpPage;
