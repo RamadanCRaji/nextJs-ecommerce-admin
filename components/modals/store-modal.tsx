@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "react-hot-toast";
 import { redirect } from "@/node_modules/next/navigation";
 
+/*CREATING A OBJECT SCHEMA */
 // Defines how the form data should look like:Schema
 const StoreformSchema = z.object({
    name: z
@@ -32,7 +33,7 @@ export const StoreModal = () => {
    const [loading, setLoading] = useState(false);
 
    const form = useForm<z.infer<typeof StoreformSchema>>({
-      resolver: zodResolver(StoreformSchema), //used Zod to to validate fields based on schema aka ensuring the data matches ther rules i set in form schema
+      resolver: zodResolver(StoreformSchema), //used Zod to  validate fields based on schema aka ensuring the data matches ther rules i set in form schema
       defaultValues: {
          name: "",
       },
@@ -60,7 +61,7 @@ export const StoreModal = () => {
       <Modal
          title="Create store"
          description="Add a new Store to manage products and catefories "
-         isOpen={storeModalState.isOpen}
+         isOpen={storeModalState.isOpen} // we are implimenting the hook from the storehook aka useStoreModal
          onClose={storeModalState.onClose} //the value here is method **look at the use-store-modal hook for the function
       >
          {/* Placeholder for the future store creation form */}
@@ -106,6 +107,7 @@ export const StoreModal = () => {
 };
 // To make this modal available throughout the entire application, i created  a dedicated provider(modalProvider) in the root folder.
 
-// typeof formSchema helps TypeScript understand the structure of the expected form data.
+// z.object() creates the schema of the variables in the form
+// typeof in 'typeof formSchema' helps TypeScript understand the structure of the expected form data/get the types of the data values supposed to be  in the form
 // z.infer<typeof formSchema> infers the exact type of data the form should receive based on formSchema.
 // zodResolver(formSchema) uses formSchema to validate the form data against the defined rules.

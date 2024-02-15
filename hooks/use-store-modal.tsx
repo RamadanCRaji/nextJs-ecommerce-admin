@@ -15,3 +15,5 @@ export const useStoreModal = create<ModalState>((set) => ({
 }));
 
 // Both onOpen and onClose functions change the state of isOpen.
+
+// note that i am creating a store which according to zustand is a hook and i can put anything inside this store/hook

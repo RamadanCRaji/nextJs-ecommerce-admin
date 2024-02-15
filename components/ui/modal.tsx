@@ -1,7 +1,6 @@
 // Here we have the parent modal that we will resuse over and over again
 
 "use client";
-import React from "react";
 
 import {
    Dialog,
@@ -31,6 +30,8 @@ export const Modal: React.FC<ModalProps> = ({
    // Function to handle changes in the dialog's open state
    const onChange = (open: boolean) => {
       if (!open) {
+         //remember that  onClose is a function that does not return anything
+         //and we will recieve it as a prop into the modal
          onClose();
       }
    };

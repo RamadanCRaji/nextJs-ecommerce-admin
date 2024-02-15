@@ -32,3 +32,6 @@ export default function RootLayout({
       </ClerkProvider>
    );
 }
+
+// over here we have implemented ClerkProvider here auth provider for the
+// we have also implemented a ModalProvder to allow access anywhere aroung our app and this is triggerd using hooks
